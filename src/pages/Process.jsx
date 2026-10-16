@@ -1,0 +1,3 @@
+import Seo from '../components/Seo.jsx';import {PageTitle,CTA} from '../components/ui.jsx';import {STEPS} from '../data/site.js'
+export default function Process(){return <><Seo title="Our Process" description="How EgNisher works: Discover, Plan, Build and Improve." path="/process"/><PageTitle title="Our Process" text="A clear, collaborative process from first conversation to launch and beyond."/>
+<section className="sec"><ol className="grid gap-6 md:grid-cols-2">{STEPS.map(([t,d],i)=><li key={t} className="card"><span className="text-sm font-semibold text-brand-teal">Step {i+1}</span><h2 className="mb-2 text-2xl font-semibold">{t}</h2><p className="text-brand-muted">{d}</p></li>)}</ol></section><CTA/></>}

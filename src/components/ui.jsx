@@ -1,0 +1,39 @@
+import {useEffect,useRef,useState} from 'react';import {Link} from 'react-router-dom'
+export const Head=({title,text,children})=><div className="mb-8"><h2 className="h2">{title}</h2>{text&&<p className="lead">{text}</p>}{children}</div>
+export const PageTitle=({title,text})=><section className="border-b border-brand-line bg-white"><div className="sec !py-12"><h1 className="mb-3 text-4xl font-bold md:text-5xl">{title}</h1>{text&&<p className="lead text-lg">{text}</p>}</div></section>
+export const Marquee=({items})=><div className="marquee overflow-hidden bg-brand-dark py-3 text-white" aria-label="Business categories">
+<ul className="track flex w-max gap-12 px-6">{[...items,...items].map((t,i)=><li key={i} aria-hidden={i>=items.length} className="flex items-center gap-12 whitespace-nowrap"><span>{t}</span><span aria-hidden className="text-brand-teal">●</span></li>)}</ul></div>
+export const ServiceCard=({s})=><article className="card flex h-full flex-col"><h3 className="mb-2 text-lg font-semibold">{s.title}</h3><p className="mb-4 flex-1 text-brand-muted">{s.short}</p><Link to={`/services/${s.slug}`} className="font-semibold text-brand hover:underline">Learn more about {s.title}</Link></article>
+export function Carousel({label,children}){const r=useRef(null);const go=d=>r.current.scrollBy({left:d*320,behavior:'smooth'})
+return <div><div className="mb-3 flex justify-end gap-2">{[['Previous',-1,'←'],['Next',1,'→']].map(([l,d,s])=><button key={l} type="button" aria-label={`${l} ${label}`} onClick={()=>go(d)} className="h-11 w-11 rounded-full border-2 border-brand text-lg text-brand transition-colors hover:bg-brand hover:text-white">{s}</button>)}</div>
+<div ref={r} tabIndex={0} role="region" aria-label={label} onKeyDown={e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)}} className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">{children.map((c,i)=><div key={i} className="w-[82%] shrink-0 snap-start sm:w-[300px]">{c}</div>)}</div></div>}
+export function Accordion({items}){const [o,setO]=useState(0)
+return <div className="max-w-3xl">{items.map(([q,a],i)=><div key={q} className="border-b border-brand-line"><h3><button type="button" aria-expanded={o===i} aria-controls={`faq-${i}`} onClick={()=>setO(o===i?-1:i)} className="flex w-full items-center justify-between py-4 text-left font-sans font-semibold">{q}<span aria-hidden className="ml-4 text-brand">{o===i?'−':'+'}</span></button></h3><div id={`faq-${i}`} hidden={o!==i}><p className="pb-4 text-brand-muted">{a}</p></div></div>)}</div>}
+export const ProjectCard=({p})=><article className="card flex h-full flex-col !p-4"><div className="mb-4 flex aspect-[16/10] items-center justify-center rounded-xl bg-gradient-to-br from-[#F3EEFF] to-[#E4F8F5]" aria-hidden="true"><div className="h-2/3 w-2/3 rounded-lg border border-brand-line bg-white p-2 shadow-soft"><div className="h-1/2 rounded bg-brand-light"/><div className="mt-2 h-2 w-3/4 rounded bg-brand-line"/><div className="mt-1 h-2 w-1/2 rounded bg-brand-teal/50"/></div></div>
+<span className="tag mb-2 self-start">{p.kind}</span><h3 className="text-lg font-semibold">{p.title}</h3><p className="mb-3 flex-1 text-brand-muted">{p.summary}</p><Link to={`/portfolio/${p.slug}`} className="font-semibold text-brand hover:underline">View {p.title} concept</Link></article>
+export const PostCard=({p})=><article className="card flex h-full flex-col"><div aria-hidden="true" className="mb-4 flex aspect-[16/9] items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-teal text-white"><Icon n={ICONS[p.category]||'layout'} s={36}/></div><div className="mb-2 flex gap-2"><span className="tag">{p.category}</span><span className="tag !bg-[#FFF4E5] !text-[#93370D]">{p.status}</span></div><h3 className="mb-2 text-lg font-semibold">{p.title}</h3><p className="mb-3 flex-1 text-brand-muted">{p.excerpt}</p><p className="mb-2 text-sm text-brand-muted">{p.author} · {p.readMin} min read</p><Link to={`/blog/${p.slug}`} className="font-semibold text-brand hover:underline">Read article</Link></article>
+export const TeamCard=({m})=><article className="card text-center"><svg viewBox="0 0 80 80" role="img" aria-label={`Avatar placeholder for ${m.name}`} className="mx-auto mb-3 h-20 w-20"><circle cx="40" cy="40" r="40" fill="#F3EEFF"/><circle cx="40" cy="31" r="13" fill="#B996FF"/><path d="M14 68c3-14 14-21 26-21s23 7 26 21a40 40 0 0 1-52 0z" fill="#642CD7" opacity=".85"/></svg>
+<h3 className="font-semibold">{m.name}</h3>{/* EDIT role text in src/data/team.js */}<p className="mb-2 text-sm text-brand-muted">{m.role}</p>
+{/* TODO: replace '#' with the real GitHub URL in src/data/team.js */}<a href={m.github} className="text-sm font-semibold text-brand hover:underline" aria-label={`GitHub profile of ${m.name} (link to be added)`}>GitHub</a></article>
+export const CTA=()=><section className="bg-gradient-to-r from-brand to-brand-bright text-white"><div className="sec text-center"><h2 className="mb-3 text-3xl font-semibold">Let’s Build Something Better</h2><p className="mx-auto mb-6 max-w-xl text-white/90">Have a website idea or an existing website that needs improvement? Let’s discuss how EgNisher can help.</p><Link to="/contact" className="btn bg-white !border-white text-brand hover:bg-brand-light/30 hover:!text-white">Contact Us</Link></div></section>
+const PATHS={layout:'M3 4h18v16H3zM3 9h18M9 9v11',phone:'M7 2h10v20H7zM11 18h2',bolt:'M13 2L4 14h7l-1 8 9-12h-7z',shield:'M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z',chat:'M4 4h16v12H8l-4 4z',code:'M8 7l-5 5 5 5M16 7l5 5-5 5',check:'M5 12l5 5 9-10',users:'M16 8a4 4 0 1 0-8 0 4 4 0 0 0 8 0zM4 21c0-4 4-6 8-6s8 2 8 6',mail:'M3 5h18v14H3zM3 6l9 7 9-7',pin:'M12 22s7-6 7-12a7 7 0 1 0-14 0c0 6 7 12 7 12zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'}
+const ICONS={'Web Design':'layout',Redesign:'layout','Landing Pages':'bolt',Mobile:'phone',Usability:'check',Planning:'chat',Content:'chat',Development:'code'}
+export const Icon=({n,s=24})=><svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={PATHS[n]||PATHS.layout}/></svg>
+export const Feature=({icon,title,text})=><div className="card"><span className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-[#F3EEFF] text-brand"><Icon n={icon}/></span><h3 className="mb-1 text-lg font-semibold">{title}</h3><p className="text-brand-muted">{text}</p></div>
+export function Reveal({children,className=''}){const r=useRef(null);const [on,setOn]=useState(false)
+useEffect(()=>{const el=r.current
+if(!el||!('IntersectionObserver' in window)){setOn(true);return}
+const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){setOn(true);io.disconnect()}},{threshold:0.1})
+io.observe(el)
+return()=>{io.disconnect()}},[])
+return <div ref={r} className={`reveal ${on?'in':''} ${className}`}>{children}</div>}
+export const Section=({bg=false,id,children})=><section id={id} className={bg?'bg-white':''}><Reveal className="sec">{children}</Reveal></section>
+export function Counter({to,label}){const r=useRef(null);const [n,setN]=useState(0)
+useEffect(()=>{const el=r.current
+if(!el||window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){setN(to);return}
+let raf=0
+const io=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;io.disconnect();const t0=performance.now()
+const tick=t=>{const p=Math.min(1,(t-t0)/1200);setN(Math.round(to*p));if(p<1)raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick)})
+io.observe(el)
+return()=>{io.disconnect();cancelAnimationFrame(raf)}},[to])
+return <div ref={r} className="text-center"><p className="font-display text-4xl font-bold text-brand"><span aria-hidden="true">{n}</span><span className="sr-only">{to}</span></p><p className="text-sm text-brand-muted">{label}</p></div>}
